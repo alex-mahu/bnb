@@ -6,17 +6,22 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.toIntExact;
 import static org.openqa.selenium.Platform.ANY;
 
-public final class WebDriverFactory {
+public final class DriverFactory {
 
-    private WebDriverFactory(){}
+    private DriverFactory(){}
 
     public static ChromeDriver getDriver() {
         WebDriverManager.chromedriver().setup();
         ChromeDriver driver = new ChromeDriver(getOptions());
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
         maximizeBrowser(driver);
         return driver;
     }
