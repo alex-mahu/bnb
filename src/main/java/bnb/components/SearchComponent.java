@@ -6,17 +6,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.LocalDate;
-import java.time.Month;
-
-import static java.util.Objects.isNull;
 
 public final class SearchComponent {
-
-    private final ChromeDriver driver;
 
     private static final By SEARCH_LOCATOR = By.name("query");
     private static final By CHECK_IN_LOCATOR = By.id("checkin_input");
     private static final By CHECK_OUT_LOCATOR = By.id("checkout_input");
+    private final ChromeDriver driver;
 
     public SearchComponent(ChromeDriver driver) {
         this.driver = driver;
@@ -45,9 +41,4 @@ public final class SearchComponent {
         new DatePickerComponent(driver)
                 .selectDate(date);
     }
-
-
-
-
-
 }

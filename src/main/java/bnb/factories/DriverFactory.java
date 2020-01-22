@@ -6,7 +6,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +14,8 @@ import static org.openqa.selenium.Platform.ANY;
 
 public final class DriverFactory {
 
-    private DriverFactory(){}
+    private DriverFactory() {
+    }
 
     public static ChromeDriver getDriver() {
         WebDriverManager.chromedriver().setup();
