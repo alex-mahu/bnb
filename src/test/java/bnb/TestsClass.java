@@ -27,9 +27,12 @@ public class TestsClass {
         LocalDate checkOut = checkIn.plus(1, ChronoUnit.WEEKS);
 
         new SearchComponent(driver)
-                .searchForLocation("Milano")
+                .withLocation("Milano")
                 .setCheckIn(checkIn)
-                .setCheckout(checkOut);
+                .setCheckout(checkOut)
+                .withGuests(2, 1)
+                .search();
+
 
         System.out.println("Done");
     }

@@ -1,8 +1,8 @@
 package bnb.components;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -15,7 +15,7 @@ public final class DatePickerComponent {
     private static final By NEXT_MONTH_ARROW_LOCATOR = By.cssSelector("[aria-label='Move forward to switch to the next month.']");
     private final WebElement datePickerElement;
 
-    public DatePickerComponent(WebDriver driver) {
+    public DatePickerComponent(ChromeDriver driver) {
         datePickerElement = driver.findElement(DATE_PICKER_LOCATOR);
     }
 
