@@ -3,7 +3,7 @@ package bnb.components;
 import bnb.models.Accommodation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public final class AccommodationsListComponent {
 
     private final List<WebElement> accommodations;
 
-    public AccommodationsListComponent(ChromeDriver driver) {
+    public AccommodationsListComponent(FirefoxDriver driver) {
         accommodations = driver.findElement(ACCOMMODATION_LIST_LOCATOR)
                 .findElements(ACCOMMODATION_LIST_ITEM_LOCATOR);
     }

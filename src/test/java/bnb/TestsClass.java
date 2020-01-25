@@ -2,61 +2,88 @@ package bnb;
 
 import bnb.components.AccommodationsListComponent;
 import bnb.components.FiltersComponent;
+import bnb.components.MoreFiltersComponent;
 import bnb.components.SearchComponent;
 import bnb.factories.DriverFactory;
 import bnb.helpers.DateGenerator;
+import bnb.helpers.PageNavigation;
 import bnb.models.Accommodation;
-import org.openqa.selenium.chrome.ChromeDriver;
+import bnb.models.SearchCriteria;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static bnb.helpers.AccommodationsHelper.takeAccommodationsThatHaveLessMaxGuests;
+import static bnb.helpers.DateGenerator.getExpectedDurationFilterString;
+import static bnb.models.MoreFiltersExtras.POOL;
 
 public class TestsClass {
 
-    private ChromeDriver driver;
+    private FirefoxDriver driver;
 
     @BeforeClass
     public void setUp() {
         driver = DriverFactory.getDriver();
     }
 
-    @Test
-    public void testName() {
-        driver.get("https://www.airbnb.com/");
-
+    @DataProvider(name = "searchDataProvider")
+    public Object[] searchDataProvider() {
         DateGenerator dateGenerator = new DateGenerator();
-        LocalDate checkIn = dateGenerator.getCheckInDate();
-        LocalDate checkOut = dateGenerator.getCheckOutDate();
+        return new Object[]{new SearchCriteria("Rome, Italy", dateGenerator.getCheckInDate(), dateGenerator.getCheckOutDate(), 2, 1)};
+    }
+
+    @Test(dataProvider = "searchDataProvider")
+    public void test1(SearchCriteria searchCriteria) {
+
+        new PageNavigation(driver).navigateToAirBnB();
 
         new SearchComponent(driver)
-                .withLocation("Rome, Italy")
-                .setCheckIn(checkIn)
-                .setCheckout(checkOut)
-                .withGuests(2, 1)
+                .withLocation(searchCriteria.getLocation())
+                .setCheckIn(searchCriteria.getCheckInDate())
+                .setCheckout(searchCriteria.getCheckOutDate())
+                .withGuests(searchCriteria.getAdults(), searchCriteria.getChildren())
                 .search();
 
         final FiltersComponent filtersComponent = new FiltersComponent(driver);
-        final String datesFilterValue = filtersComponent.getDatesFilterValue();
-        final String guestsFilterValue = filtersComponent.getGuestsFilterValue();
 
         SoftAssert checker = new SoftAssert();
 
-        checker.assertEquals(datesFilterValue, dateGenerator.getExpectedDurationFilterString(), "Dates filter does not have the correct value");
-        checker.assertEquals(guestsFilterValue, "3 guests", "Guests filter does not have the correct value");
+        int guests = searchCriteria.computeGuests();
+
+        checker.assertEquals(filtersComponent.getDatesFilterValue(), getExpectedDurationFilterString(searchCriteria.getCheckInDate(), searchCriteria.getCheckOutDate()), "Dates filter does not have the correct value");
+        checker.assertEquals(filtersComponent.getGuestsFilterValue(), guests + " guests", "Guests filter does not have the correct value");
 
         final List<Accommodation> accommodationsInformationFromPage = new AccommodationsListComponent(driver)
                 .getAccommodationsInformationFromPage();
 
-        final List<Accommodation> filteredAccommodations = takeAccommodationsThatHaveLessMaxGuests(accommodationsInformationFromPage, 3);
+        final List<Accommodation> filteredAccommodations = takeAccommodationsThatHaveLessMaxGuests(accommodationsInformationFromPage, guests);
 
-        checker.assertTrue(filteredAccommodations.isEmpty(), String.format("Accommodations that have less than %d guests are: %n %s", 3, filteredAccommodations));
+        checker.assertTrue(filteredAccommodations.isEmpty(), String.format("Accommodations that have less than %d guests are: %n %s", guests, filteredAccommodations));
         checker.assertAll();
+    }
+
+    @DataProvider(name = "extraFiltersDataProvider")
+    public Object[] extraFiltersDataProvider() {
+        DateGenerator dateGenerator = new DateGenerator();
+        return new Object[]{new SearchCriteria("Rome, Italy", dateGenerator.getCheckInDate(), dateGenerator.getCheckOutDate(), 2, 1)};
+    }
+
+    @Test(dataProvider = "extraFiltersDataProvider")
+    public void test2(SearchCriteria searchCriteria) {
+        new PageNavigation(driver).navigateToAirBnBSearchResultPage(searchCriteria);
+
+        final FiltersComponent filtersComponent = new FiltersComponent(driver);
+        filtersComponent.openMoreFilters();
+
+        final MoreFiltersComponent moreFiltersComponent = new MoreFiltersComponent(driver);
+        moreFiltersComponent.setNumberOfBedrooms(5)
+                .setExtras(POOL)
+                .saveMoreFilters();
     }
 
     @AfterClass

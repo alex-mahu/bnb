@@ -24,7 +24,7 @@ public final class DateGenerator {
         return checkOutDate;
     }
 
-    public String getExpectedDurationFilterString() {
+    public static String getExpectedDurationFilterString(LocalDate checkInDate, LocalDate checkOutDate) {
         final Month checkInMonth = checkInDate.getMonth();
         final Month checkOutMonth = checkOutDate.getMonth();
         String checkInMonthAsString = checkInMonth.getDisplayName(TextStyle.SHORT, Locale.US);

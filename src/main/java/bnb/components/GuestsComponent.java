@@ -2,17 +2,17 @@ package bnb.components;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public final class GuestsComponent {
-    private final ChromeDriver driver;
+    private final FirefoxDriver driver;
 
     private static final By ADULTS_COUNT_LOCATOR = By.cssSelector("[aria-labelledby*='-adults']");
     private static final By CHILDREN_COUNT_LOCATOR = By.cssSelector("[aria-labelledby*='-children']");
     private static final By CURRENT_PEOPLE_COUNT = By.cssSelector("[aria-hidden='true']");
     private static final By SAVE_BUTTON_LOCATOR = By.id("filter-panel-save-button");
 
-    public GuestsComponent(ChromeDriver driver) {
+    public GuestsComponent(FirefoxDriver driver) {
         this.driver = driver;
     }
 

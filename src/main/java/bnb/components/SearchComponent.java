@@ -3,7 +3,7 @@ package bnb.components;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.time.LocalDate;
 
@@ -14,9 +14,9 @@ public final class SearchComponent {
     private static final By CHECK_OUT_LOCATOR = By.id("checkout_input");
     private static final By GUESTS_DROPDOWN_LOCATOR = By.id("lp-guestpicker");
     private static final By SEARCH_BUTTON_LOCATOR = By.cssSelector("[type='submit']");
-    private final ChromeDriver driver;
+    private final FirefoxDriver driver;
 
-    public SearchComponent(ChromeDriver driver) {
+    public SearchComponent(FirefoxDriver driver) {
         this.driver = driver;
     }
 

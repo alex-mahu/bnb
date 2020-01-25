@@ -3,20 +3,25 @@ package bnb.components;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
+import static bnb.helpers.DriverHelper.waitableClick;
+
 public final class DatePickerComponent {
 
     private static final By DATE_PICKER_LOCATOR = By.cssSelector("[aria-roledescription='datepicker']");
     private static final By NEXT_MONTH_ARROW_LOCATOR = By.cssSelector("[aria-label='Move forward to switch to the next month.']");
     private final WebElement datePickerElement;
+    private final FirefoxDriver driver;
 
-    public DatePickerComponent(ChromeDriver driver) {
+    public DatePickerComponent(FirefoxDriver driver) {
         datePickerElement = driver.findElement(DATE_PICKER_LOCATOR);
+        this.driver = driver;
     }
 
     private boolean shouldMoveToNextMonth(Month expectedMonth) {
@@ -35,7 +40,9 @@ public final class DatePickerComponent {
                 date.getMonth().getDisplayName(TextStyle.FULL, Locale.US),
                 date.getDayOfMonth());
 
-        datePickerElement.findElement(By.cssSelector(dateCellLocator)).click();
+        final WebElement dateElement = datePickerElement.findElement(By.cssSelector(dateCellLocator));
+
+        waitableClick(driver, dateElement);
     }
 
 
