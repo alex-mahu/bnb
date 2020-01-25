@@ -1,20 +1,29 @@
 package bnb.components;
 
-import bnb.models.MoreFiltersExtras;
+import bnb.models.MoreFilters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import static bnb.helpers.DriverHelper.*;
 import static java.lang.String.format;
 
 public final class MoreFiltersComponent {
     private static final By EXTRA_SECTION_LOCATOR = By.cssSelector("[aria-label='Extras']");
+    private static final By FACILITIES_SECTION_LOCATOR = By.cssSelector("[aria-label='Facilities']");
     private static final By BEDROOMS_LOCATOR = By.id("filterItem-stepper-min_bedrooms-0");
     private static final By MINUS = By.cssSelector("button[aria-label='decrease value']");
     private static final By PLUS = By.cssSelector("button[aria-label='increase value']");
     private static final By HIDE_SHOW_ALL_OPTIONS = By.cssSelector("[style*='transform: rotate(']");
     private static final By SHOW_STAYS = By.cssSelector("footer>button");
+    private static final By GENERIC_HEADER_LOCATOR = By.cssSelector("[aria-label='More filters'] h2");
+    private static final By SELECTED_OPTIONS_LOCATOR = By.cssSelector("[data-checkbox]");
     private final FirefoxDriver driver;
 
     public MoreFiltersComponent(FirefoxDriver driver) {
@@ -37,26 +46,64 @@ public final class MoreFiltersComponent {
         return this;
     }
 
-    public MoreFiltersComponent setExtras(MoreFiltersExtras... extras) {
+    public MoreFiltersComponent setFilterOptions(MoreFilters... extras) {
+
+        if (hasFacilities()) {
+            setFacilities(extras);
+        } else {
+            setExtras(extras);
+        }
+
+        return this;
+    }
+
+    private void setFacilities(MoreFilters... extras) {
+        final WebElement facilitiesSection = driver.findElement(FACILITIES_SECTION_LOCATOR);
+        setOptions(facilitiesSection, false, extras);
+    }
+
+    private void setExtras(MoreFilters... extras) {
         final WebElement extraSection = driver.findElement(EXTRA_SECTION_LOCATOR);
-        scrollToElement(driver, extraSection);
-        for (MoreFiltersExtras extra : extras) {
-            expandSection(extraSection);
+        setOptions(extraSection, true, extras);
+    }
+
+    private boolean hasFacilities() {
+        final List<String> headersText = new ArrayList<>();
+        driver.findElements(GENERIC_HEADER_LOCATOR).forEach(header -> headersText.add(header.getText()));
+
+        for (String headerText : headersText) {
+            if (headerText.contains("Facilities")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void setOptions(WebElement section, boolean expandSection, MoreFilters... extras) {
+        scrollToElement(driver, section);
+
+        if (expandSection) {
+            expandSection(section);
+        }
+
+        for (MoreFilters extra : extras) {
             By extraOptionLocator = generateExtraOptionLocator(extra);
-            WebElement extraOptionElement = extraSection.findElement(extraOptionLocator);
+            WebElement extraOptionElement = section.findElement(extraOptionLocator);
             if (!isOptionSelected(extraOptionElement)) {
                 extraOptionElement.click();
             }
         }
-        return this;
     }
 
     public void saveMoreFilters() {
         driver.findElement(SHOW_STAYS).click();
+        new Actions(driver)
+                .pause(Duration.of(2, ChronoUnit.SECONDS))
+                .perform();
     }
 
     private boolean isOptionSelected(WebElement option) {
-        final WebElement element = option.findElement(By.cssSelector("[data-checkbox]"));
+        final WebElement element = option.findElement(SELECTED_OPTIONS_LOCATOR);
         return elementHasChildren(driver, element);
     }
 
@@ -72,7 +119,7 @@ public final class MoreFiltersComponent {
         return styleValue.contains("(0deg)");
     }
 
-    private By generateExtraOptionLocator(MoreFiltersExtras extra) {
+    private By generateExtraOptionLocator(MoreFilters extra) {
         return By.cssSelector(format("label[for='filterItem-checkbox-amenities-%d']", extra.getLocatorPart()));
     }
 

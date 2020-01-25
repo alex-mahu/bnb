@@ -1,11 +1,11 @@
 package bnb.models;
 
-public enum MoreFiltersExtras {
+public enum MoreFilters {
     POOL(7);
 
     private int locatorPart;
 
-    MoreFiltersExtras(int locatorPart) {
+    MoreFilters(int locatorPart) {
         this.locatorPart = locatorPart;
     }
 

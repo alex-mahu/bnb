@@ -7,7 +7,9 @@ import bnb.components.SearchComponent;
 import bnb.factories.DriverFactory;
 import bnb.helpers.DateGenerator;
 import bnb.helpers.PageNavigation;
-import bnb.models.Accommodation;
+import bnb.models.AccommodationDetails;
+import bnb.models.AccommodationInformation;
+import bnb.models.MoreFilters;
 import bnb.models.SearchCriteria;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
@@ -19,8 +21,10 @@ import org.testng.asserts.SoftAssert;
 import java.util.List;
 
 import static bnb.helpers.AccommodationsHelper.takeAccommodationsThatHaveLessMaxGuests;
+import static bnb.helpers.AccommodationsHelper.takeAccommodationsThatHaveLessThanBedrooms;
 import static bnb.helpers.DateGenerator.getExpectedDurationFilterString;
-import static bnb.models.MoreFiltersExtras.POOL;
+import static bnb.models.MoreFilters.POOL;
+import static java.lang.String.format;
 
 public class TestsClass {
 
@@ -34,7 +38,7 @@ public class TestsClass {
     @DataProvider(name = "searchDataProvider")
     public Object[] searchDataProvider() {
         DateGenerator dateGenerator = new DateGenerator();
-        return new Object[]{new SearchCriteria("Rome, Italy", dateGenerator.getCheckInDate(), dateGenerator.getCheckOutDate(), 2, 1)};
+        return new Object[]{new SearchCriteria("Rome, Italy", dateGenerator.getCheckInDate(), dateGenerator.getCheckOutDate(), 2, 1, 0)};
     }
 
     @Test(dataProvider = "searchDataProvider")
@@ -58,32 +62,50 @@ public class TestsClass {
         checker.assertEquals(filtersComponent.getDatesFilterValue(), getExpectedDurationFilterString(searchCriteria.getCheckInDate(), searchCriteria.getCheckOutDate()), "Dates filter does not have the correct value");
         checker.assertEquals(filtersComponent.getGuestsFilterValue(), guests + " guests", "Guests filter does not have the correct value");
 
-        final List<Accommodation> accommodationsInformationFromPage = new AccommodationsListComponent(driver)
+        final List<AccommodationInformation> accommodationsInformationFromPage = new AccommodationsListComponent(driver)
                 .getAccommodationsInformationFromPage();
 
-        final List<Accommodation> filteredAccommodations = takeAccommodationsThatHaveLessMaxGuests(accommodationsInformationFromPage, guests);
+        final List<AccommodationInformation> filteredAccommodationsInformation = takeAccommodationsThatHaveLessMaxGuests(accommodationsInformationFromPage, guests);
 
-        checker.assertTrue(filteredAccommodations.isEmpty(), String.format("Accommodations that have less than %d guests are: %n %s", guests, filteredAccommodations));
+        checker.assertTrue(filteredAccommodationsInformation.isEmpty(), format("Accommodations that have less than %d guests are: %n %s", guests, filteredAccommodationsInformation));
         checker.assertAll();
     }
 
     @DataProvider(name = "extraFiltersDataProvider")
-    public Object[] extraFiltersDataProvider() {
+    public Object[][] extraFiltersDataProvider() {
         DateGenerator dateGenerator = new DateGenerator();
-        return new Object[]{new SearchCriteria("Rome, Italy", dateGenerator.getCheckInDate(), dateGenerator.getCheckOutDate(), 2, 1)};
+        return new Object[][]{{
+            new SearchCriteria("Rome, Italy", dateGenerator.getCheckInDate(), dateGenerator.getCheckOutDate(), 2, 1, 5),
+            new MoreFilters[] {POOL}}};
     }
 
     @Test(dataProvider = "extraFiltersDataProvider")
-    public void test2(SearchCriteria searchCriteria) {
+    public void test2(SearchCriteria searchCriteria, MoreFilters... filters) {
         new PageNavigation(driver).navigateToAirBnBSearchResultPage(searchCriteria);
 
         final FiltersComponent filtersComponent = new FiltersComponent(driver);
         filtersComponent.openMoreFilters();
 
         final MoreFiltersComponent moreFiltersComponent = new MoreFiltersComponent(driver);
-        moreFiltersComponent.setNumberOfBedrooms(5)
-                .setExtras(POOL)
+        moreFiltersComponent.setNumberOfBedrooms(searchCriteria.getMinBedrooms())
+                .setFilterOptions(filters)
                 .saveMoreFilters();
+
+        final AccommodationsListComponent accommodationsListComponent = new AccommodationsListComponent(driver);
+
+        final List<AccommodationInformation> accommodationsFromPage = accommodationsListComponent
+                .getAccommodationsInformationFromPage();
+
+        final List<AccommodationInformation> filteredAccommodationsInformation = takeAccommodationsThatHaveLessThanBedrooms(accommodationsFromPage, searchCriteria.getMinBedrooms());
+
+        SoftAssert checker = new SoftAssert();
+
+        checker.assertTrue(filteredAccommodationsInformation.isEmpty(), format("Accommodations that have less than %d bedrooms are: %n %s", searchCriteria.getMinBedrooms(), filteredAccommodationsInformation));
+
+        final AccommodationDetails accommodationDetails = accommodationsListComponent.getDetailsOf(0);
+
+        checker.assertEquals(accommodationDetails.getFilters(), filters);
+
     }
 
     @AfterClass
