@@ -18,14 +18,12 @@ public final class DriverFactory {
 
     public static WebDriver getDriver() {
         synchronized (DriverFactory.class) {
-            final ThreadLocal<WebDriver> driverThread = new ThreadLocal<>();
             WebDriverManager.firefoxdriver().setup();
             FirefoxDriver driver = new FirefoxDriver(getOptions());
             driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT, TimeUnit.SECONDS);
             driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
             driver.manage().window().maximize();
-            driverThread.set(driver);
-            return driverThread.get();
+            return driver;
         }
     }
 
