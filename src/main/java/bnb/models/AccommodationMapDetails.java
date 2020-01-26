@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import static java.lang.String.format;
 
-public class AccommodationMapDetails {
+public final class AccommodationMapDetails {
     private String title;
     private String name;
     private String price;
