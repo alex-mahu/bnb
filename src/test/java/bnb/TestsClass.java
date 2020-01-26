@@ -121,7 +121,7 @@ public class TestsClass {
     }
 
     @Test(dataProvider = "mapCheckDataProvider")
-    public void given_ASearchCriteria_When_TheUserHoversMouseOverAnAccommodationFromTheList_Then_ThePinOnTheMapCorrespondingToTheAccommodationChangesColorAndDetailsOfTheGivenPinMatchesTheDataDisplayedOnTheListItem(SearchCriteria searchCriteria, int listIndexAccommodation) {
+    public void given_ASearchCriteria_When_TheUserHoversMouseOverAnAccommodationFromTheList_And_OpensTheDetailsOfTheHighlightedPin_Then_ThePinOnTheMapCorrespondingToTheAccommodationChangesColorAndDetailsOfTheGivenPinMatchesTheDataDisplayedOnTheListItem(SearchCriteria searchCriteria, int listIndexAccommodation) {
 
         WebDriver driver = getDriver();
 
