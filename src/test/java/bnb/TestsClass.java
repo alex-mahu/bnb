@@ -42,7 +42,7 @@ public class TestsClass {
     }
 
     @Test(dataProvider = "searchDataProvider")
-    public void test1(SearchCriteria searchCriteria) {
+    public void given_ASearchCriteria_When_TheUserPerformsSearchForAccommodations_Then_TheFiltersAreSetCorrectly_And_TheAccommodationsFromTheListSupportTheNumberOfGuestsUserEntered(SearchCriteria searchCriteria) {
 
         WebDriver driver = getDriver();
 
@@ -82,7 +82,7 @@ public class TestsClass {
     }
 
     @Test(dataProvider = "extraFiltersDataProvider")
-    public void test2(SearchCriteria searchCriteria, MoreFilters... filters) {
+    public void given_ASearchCriteria_And_AFilter_When_TheUserAppliesTheFilters_Then_TheChosenAccommodationFromTheListHasCriteriaMatchingTheSetFilter(SearchCriteria searchCriteria, MoreFilters... filters) {
 
         WebDriver driver = getDriver();
 
@@ -121,7 +121,7 @@ public class TestsClass {
     }
 
     @Test(dataProvider = "mapCheckDataProvider")
-    public void test3(SearchCriteria searchCriteria, int listIndexAccommodation) {
+    public void given_ASearchCriteria_When_TheUserHoversMouseOverAnAccommodationFromTheList_Then_ThePinOnTheMapCorrespondingToTheAccommodationChangesColorAndDetailsOfTheGivenPinMatchesTheDataDisplayedOnTheListItem(SearchCriteria searchCriteria, int listIndexAccommodation) {
 
         WebDriver driver = getDriver();
 
