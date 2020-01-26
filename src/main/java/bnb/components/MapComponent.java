@@ -3,6 +3,7 @@ package bnb.components;
 import bnb.models.AccommodationMapDetails;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -15,10 +16,10 @@ public final class MapComponent {
     private static final By MAP_ACCOMMODATION_NAME = By.cssSelector("._86s60oj");
     private static final By MAP_ACCOMMODATION_PRICE = By.cssSelector("._o60r27k");
     private static final By MAP_ACCOMMODATION_RATING = By.cssSelector("._60hvkx2");
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
     private WebElement openedMapDetails;
 
-    public MapComponent(FirefoxDriver driver) {
+    public MapComponent(WebDriver driver) {
         this.driver = driver;
     }
 

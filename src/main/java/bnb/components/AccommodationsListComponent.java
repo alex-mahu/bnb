@@ -5,6 +5,7 @@ import bnb.models.AccommodationInformation;
 import bnb.models.AccommodationMapDetails;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -26,10 +27,10 @@ public final class AccommodationsListComponent {
     private static final By ACCOMMODATION_LIST_PRICE_PER_NIGHT = By.cssSelector("._1l2ab9yk");
 
     private List<WebElement> accommodations;
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
     private final String currentTabHandle;
 
-    public AccommodationsListComponent(FirefoxDriver driver) {
+    public AccommodationsListComponent(WebDriver driver) {
         this.driver = driver;
         currentTabHandle = driver.getWindowHandle();
         initializeAccommodationsList();

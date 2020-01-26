@@ -1,6 +1,7 @@
 package bnb.factories;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -15,9 +16,9 @@ public final class DriverFactory {
     private DriverFactory() {
     }
 
-    public static FirefoxDriver getDriver() {
+    public static WebDriver getDriver() {
         synchronized (DriverFactory.class) {
-            final ThreadLocal<FirefoxDriver> driverThread = new ThreadLocal<>();
+            final ThreadLocal<WebDriver> driverThread = new ThreadLocal<>();
             WebDriverManager.firefoxdriver().setup();
             FirefoxDriver driver = new FirefoxDriver(getOptions());
             driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT, TimeUnit.SECONDS);

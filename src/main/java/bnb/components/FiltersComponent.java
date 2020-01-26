@@ -2,16 +2,17 @@ package bnb.components;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public final class FiltersComponent {
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
 
     private static final By GUESTS_FILTER_BUTTON = By.id("menuItemButton-guest_picker");
     private static final By DATES_FILTER_BUTTON = By.id("menuItemButton-date_picker");
     private static final By MORE_FILTERS_BUTTON = By.cssSelector("[aria-label*='More filters']");
 
-    public FiltersComponent(FirefoxDriver driver) {
+    public FiltersComponent(WebDriver driver) {
         this.driver = driver;
     }
 

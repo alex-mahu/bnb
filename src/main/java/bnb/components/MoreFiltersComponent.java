@@ -3,6 +3,7 @@ package bnb.components;
 import bnb.models.MoreFilters;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -25,9 +26,9 @@ public final class MoreFiltersComponent {
     private static final By SHOW_STAYS = By.cssSelector("footer>button");
     private static final By GENERIC_HEADER_LOCATOR = By.cssSelector("[aria-label='More filters'] h2");
     private static final By SELECTED_OPTIONS_LOCATOR = By.cssSelector("[data-checkbox]");
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
 
-    public MoreFiltersComponent(FirefoxDriver driver) {
+    public MoreFiltersComponent(WebDriver driver) {
         this.driver = driver;
     }
 

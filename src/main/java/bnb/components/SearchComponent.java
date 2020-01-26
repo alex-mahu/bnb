@@ -3,6 +3,7 @@ package bnb.components;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -15,9 +16,9 @@ public final class SearchComponent {
     private static final By CHECK_OUT_LOCATOR = By.id("checkout_input");
     private static final By GUESTS_DROPDOWN_LOCATOR = By.id("lp-guestpicker");
     private static final By SEARCH_BUTTON_LOCATOR = By.cssSelector("[type='submit']");
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
 
-    public SearchComponent(FirefoxDriver driver) {
+    public SearchComponent(WebDriver driver) {
         this.driver = driver;
     }
 

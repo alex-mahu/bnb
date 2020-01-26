@@ -2,13 +2,14 @@ package bnb.helpers;
 
 import bnb.models.SearchCriteria;
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public final class PageNavigation {
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
     private static final Map<String, String> LOCATION_TO_URL_STRING;
     private static final String PAGE_LINK = "https://www.airbnb.com";
 
@@ -17,7 +18,7 @@ public final class PageNavigation {
         LOCATION_TO_URL_STRING.put("Rome, Italy", "Rome--Italy");
     }
 
-    public PageNavigation(FirefoxDriver driver) {
+    public PageNavigation(WebDriver driver) {
         this.driver = driver;
     }
 

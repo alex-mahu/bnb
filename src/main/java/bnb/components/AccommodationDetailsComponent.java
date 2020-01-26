@@ -4,6 +4,7 @@ import bnb.models.AccommodationDetails;
 import bnb.models.MoreFilters;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -14,7 +15,7 @@ import static bnb.helpers.DriverHelper.scrollToElement;
 import static bnb.models.MoreFilters.POOL;
 
 public final class AccommodationDetailsComponent {
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
 
     private static final By AMENITIES = By.id("amenities");
     private static final By EXPAND_SECTION = By.tagName("button");
@@ -22,7 +23,7 @@ public final class AccommodationDetailsComponent {
     private static final By FACILITIES_SECTION = By.xpath("//*[text()='Facilities']//ancestor::section[position()=1]");
     private final WebElement amenitiesElement;
 
-    public AccommodationDetailsComponent(FirefoxDriver driver) {
+    public AccommodationDetailsComponent(WebDriver driver) {
         this.driver = driver;
         amenitiesElement = driver.findElement(AMENITIES);
     }

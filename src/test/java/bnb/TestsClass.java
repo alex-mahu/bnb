@@ -5,6 +5,7 @@ import bnb.factories.DriverFactory;
 import bnb.helpers.DateGenerator;
 import bnb.helpers.PageNavigation;
 import bnb.models.*;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -23,14 +24,14 @@ import static java.lang.String.format;
 
 public class TestsClass {
 
-    private ThreadLocal<FirefoxDriver> driverHolder = new ThreadLocal<>();
+    private ThreadLocal<WebDriver> driverHolder = new ThreadLocal<>();
 
     @BeforeMethod
     public void setUp() {
         driverHolder.set(DriverFactory.getDriver());
     }
 
-    private FirefoxDriver getDriver() {
+    private WebDriver getDriver() {
         return driverHolder.get();
     }
 
@@ -43,7 +44,7 @@ public class TestsClass {
     @Test(dataProvider = "searchDataProvider")
     public void test1(SearchCriteria searchCriteria) {
 
-        FirefoxDriver driver = getDriver();
+        WebDriver driver = getDriver();
 
         new PageNavigation(driver).navigateToAirBnB();
 
@@ -83,7 +84,7 @@ public class TestsClass {
     @Test(dataProvider = "extraFiltersDataProvider")
     public void test2(SearchCriteria searchCriteria, MoreFilters... filters) {
 
-        FirefoxDriver driver = getDriver();
+        WebDriver driver = getDriver();
 
         new PageNavigation(driver).navigateToAirBnBSearchResultPage(searchCriteria);
 
@@ -122,7 +123,7 @@ public class TestsClass {
     @Test(dataProvider = "mapCheckDataProvider")
     public void test3(SearchCriteria searchCriteria, int listIndexAccommodation) {
 
-        FirefoxDriver driver = getDriver();
+        WebDriver driver = getDriver();
 
         new PageNavigation(driver).navigateToAirBnBSearchResultPage(searchCriteria);
 

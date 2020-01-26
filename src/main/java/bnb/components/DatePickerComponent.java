@@ -1,6 +1,7 @@
 package bnb.components;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -16,9 +17,9 @@ public final class DatePickerComponent {
     private static final By DATE_PICKER_LOCATOR = By.cssSelector("[aria-roledescription='datepicker']");
     private static final By NEXT_MONTH_ARROW_LOCATOR = By.cssSelector("[aria-label='Move forward to switch to the next month.']");
     private final WebElement datePickerElement;
-    private final FirefoxDriver driver;
+    private final WebDriver driver;
 
-    public DatePickerComponent(FirefoxDriver driver) {
+    public DatePickerComponent(WebDriver driver) {
         datePickerElement = driver.findElement(DATE_PICKER_LOCATOR);
         this.driver = driver;
     }
