@@ -1,6 +1,7 @@
 package bnb.components;
 
 import bnb.models.AccommodationInformation;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -23,6 +24,7 @@ public final class AccommodationComponent {
         splitAccommodationInformation = Arrays.asList(accommodationInformation.split(SEPARATOR));
     }
 
+    @Step
     public AccommodationInformation getAccommodationFromPage() {
         final String accommodationName = accommodation.findElement(ACCOMMODATION_NAME_LOCATOR).getText();
         final int maximumGuestsAllowed = getMaxAllowedGuests();

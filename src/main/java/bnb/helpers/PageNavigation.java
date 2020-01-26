@@ -1,6 +1,7 @@
 package bnb.helpers;
 
 import bnb.models.SearchCriteria;
+import io.qameta.allure.Step;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.HashMap;
@@ -20,10 +21,12 @@ public final class PageNavigation {
         this.driver = driver;
     }
 
+    @Step
     public void navigateToAirBnB() {
         driver.get(PAGE_LINK);
     }
 
+    @Step
     public void navigateToAirBnBSearchResultPage(SearchCriteria searchCriteria) {
         String link = String.format("%s/s/%s/homes?query=%s&adults=%d&children=%d&checkin=%s&checkout=%s",
                 PAGE_LINK,

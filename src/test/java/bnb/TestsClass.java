@@ -1,19 +1,14 @@
 package bnb;
 
-import bnb.components.AccommodationsListComponent;
-import bnb.components.FiltersComponent;
-import bnb.components.MoreFiltersComponent;
-import bnb.components.SearchComponent;
+import bnb.components.*;
 import bnb.factories.DriverFactory;
 import bnb.helpers.DateGenerator;
 import bnb.helpers.PageNavigation;
-import bnb.models.AccommodationDetails;
-import bnb.models.AccommodationInformation;
-import bnb.models.MoreFilters;
-import bnb.models.SearchCriteria;
+import bnb.models.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -28,11 +23,15 @@ import static java.lang.String.format;
 
 public class TestsClass {
 
-    private FirefoxDriver driver;
+    private ThreadLocal<FirefoxDriver> driverHolder = new ThreadLocal<>();
 
-    @BeforeClass
+    @BeforeMethod
     public void setUp() {
-        driver = DriverFactory.getDriver();
+        driverHolder.set(DriverFactory.getDriver());
+    }
+
+    private FirefoxDriver getDriver() {
+        return driverHolder.get();
     }
 
     @DataProvider(name = "searchDataProvider")
@@ -43,6 +42,8 @@ public class TestsClass {
 
     @Test(dataProvider = "searchDataProvider")
     public void test1(SearchCriteria searchCriteria) {
+
+        FirefoxDriver driver = getDriver();
 
         new PageNavigation(driver).navigateToAirBnB();
 
@@ -81,6 +82,9 @@ public class TestsClass {
 
     @Test(dataProvider = "extraFiltersDataProvider")
     public void test2(SearchCriteria searchCriteria, MoreFilters... filters) {
+
+        FirefoxDriver driver = getDriver();
+
         new PageNavigation(driver).navigateToAirBnBSearchResultPage(searchCriteria);
 
         final FiltersComponent filtersComponent = new FiltersComponent(driver);
@@ -105,11 +109,40 @@ public class TestsClass {
         final AccommodationDetails accommodationDetails = accommodationsListComponent.getDetailsOf(0);
 
         checker.assertEquals(accommodationDetails.getFilters(), filters);
-
+        checker.assertAll();
     }
 
-    @AfterClass
+    @DataProvider(name = "mapCheckDataProvider")
+    public Object[][] mapCheckDataProvider() {
+        DateGenerator dateGenerator = new DateGenerator();
+        return new Object[][]{ {
+                new SearchCriteria("Rome, Italy", dateGenerator.getCheckInDate(), dateGenerator.getCheckOutDate(), 2, 1, 0), 0}};
+    }
+
+    @Test(dataProvider = "mapCheckDataProvider")
+    public void test3(SearchCriteria searchCriteria, int listIndexAccommodation) {
+
+        FirefoxDriver driver = getDriver();
+
+        new PageNavigation(driver).navigateToAirBnBSearchResultPage(searchCriteria);
+
+        final AccommodationsListComponent accommodationsListComponent = new AccommodationsListComponent(driver);
+
+        AccommodationMapDetails mapDetailsFromList = accommodationsListComponent
+                .getMapAccommodationDetails(listIndexAccommodation);
+
+        accommodationsListComponent.hoverOverAccommodationFromList(listIndexAccommodation);
+
+        MapComponent mapComponent = new MapComponent(driver);
+
+        final AccommodationMapDetails mapDetailsFromOpenedPin = mapComponent.openHighlightedPin()
+                .getMapDetailsFromOpenedPin();
+
+        Assert.assertEquals(mapDetailsFromOpenedPin, mapDetailsFromList);
+    }
+
+    @AfterMethod
     public void tearDown() {
-        driver.quit();
+        getDriver().quit();
     }
 }

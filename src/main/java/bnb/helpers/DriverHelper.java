@@ -29,13 +29,12 @@ public final class DriverHelper {
         return (boolean) driver.executeScript("return arguments[0].hasChildNodes();", element);
     }
 
-    public static String getWindowHandleOtherThan(FirefoxDriver driver, String thisWindowHandle) {
+    public static String getWindowHandleOtherThan(FirefoxDriver driver, String windowHandle) {
         Set<String> windowHandles = driver.getWindowHandles();
         while (windowHandles.size() == 1) {
             windowHandles = driver.getWindowHandles();
         }
-        windowHandles.remove(thisWindowHandle);
+        windowHandles.remove(windowHandle);
         return (String) windowHandles.toArray()[0];
     }
-
 }

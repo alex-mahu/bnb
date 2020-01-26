@@ -1,5 +1,6 @@
 package bnb.components;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -16,16 +17,19 @@ public final class GuestsComponent {
         this.driver = driver;
     }
 
+    @Step
     public GuestsComponent havingAdults(int adults) {
         setCountTo(ADULTS_COUNT_LOCATOR, adults);
         return this;
     }
 
+    @Step
     public GuestsComponent havingChildren(int children) {
         setCountTo(CHILDREN_COUNT_LOCATOR, children);
         return this;
     }
 
+    @Step
     public void saveGuestsSelection() {
         driver.findElement(SAVE_BUTTON_LOCATOR).click();
     }

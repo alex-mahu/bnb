@@ -1,5 +1,6 @@
 package bnb.components;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -14,14 +15,17 @@ public final class FiltersComponent {
         this.driver = driver;
     }
 
+    @Step
     public void openMoreFilters() {
         driver.findElement(MORE_FILTERS_BUTTON).click();
     }
 
+    @Step
     public String getDatesFilterValue() {
         return driver.findElement(DATES_FILTER_BUTTON).getText();
     }
 
+    @Step
     public String getGuestsFilterValue() {
         return driver.findElement(GUESTS_FILTER_BUTTON).getText();
     }

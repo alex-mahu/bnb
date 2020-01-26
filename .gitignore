@@ -2,6 +2,7 @@ target/*
 *.iml
 **/.idea
 **/allure-results
+**/allure-report
 **/TEMP/*
 *.user.*
 *.orig

@@ -1,6 +1,7 @@
 package bnb.components;
 
 import bnb.models.MoreFilters;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -30,6 +31,7 @@ public final class MoreFiltersComponent {
         this.driver = driver;
     }
 
+    @Step
     public MoreFiltersComponent setNumberOfBedrooms(int bedrooms) {
         final WebElement bedroomsElement = driver.findElement(BEDROOMS_LOCATOR);
         final int numberOfBedroomsFromPage = getNumberOfEntitiesFromElement(bedroomsElement);
@@ -46,6 +48,7 @@ public final class MoreFiltersComponent {
         return this;
     }
 
+    @Step
     public MoreFiltersComponent setFilterOptions(MoreFilters... extras) {
 
         if (hasFacilities()) {
@@ -95,6 +98,7 @@ public final class MoreFiltersComponent {
         }
     }
 
+    @Step
     public void saveMoreFilters() {
         driver.findElement(SHOW_STAYS).click();
         new Actions(driver)

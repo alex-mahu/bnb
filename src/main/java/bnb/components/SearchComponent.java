@@ -1,5 +1,6 @@
 package bnb.components;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -20,6 +21,7 @@ public final class SearchComponent {
         this.driver = driver;
     }
 
+    @Step
     public SearchComponent withLocation(String location) {
         WebElement search = driver.findElement(SEARCH_LOCATION_LOCATOR);
         search.sendKeys(location);
@@ -27,16 +29,19 @@ public final class SearchComponent {
         return this;
     }
 
+    @Step
     public SearchComponent setCheckIn(LocalDate date) {
         setDate(date, CHECK_IN_LOCATOR);
         return this;
     }
 
+    @Step
     public SearchComponent setCheckout(LocalDate date) {
         setDate(date, CHECK_OUT_LOCATOR);
         return this;
     }
 
+    @Step
     public SearchComponent withGuests(int adults, int children) {
         driver.findElement(GUESTS_DROPDOWN_LOCATOR).click();
         new GuestsComponent(driver)
@@ -46,6 +51,7 @@ public final class SearchComponent {
         return this;
     }
 
+    @Step
     public void search() {
         driver.findElement(SEARCH_BUTTON_LOCATOR).click();
     }
