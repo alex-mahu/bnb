@@ -7,3 +7,4 @@ target/*
 *.user.*
 *.orig
 ignored.json
+**/.allure
