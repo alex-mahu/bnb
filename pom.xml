@@ -14,7 +14,7 @@
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
         <selenium.version>3.141.59</selenium.version>
-        <webdrivermanager.version>3.7.1</webdrivermanager.version>
+        <webdrivermanager.version>6.1.0</webdrivermanager.version>
         <allure>2.13.1</allure>
         <allure.maven>2.10.0</allure.maven>
         <aspectj.version>1.8.13</aspectj.version>
